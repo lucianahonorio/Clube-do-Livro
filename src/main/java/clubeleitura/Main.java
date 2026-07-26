@@ -2,7 +2,6 @@ package clubeleitura;
 
 import clubeleitura.excecao.CapituloInvalidoException;
 import clubeleitura.excecao.CodigoGrupoInvalidoException;
-import clubeleitura.excecao.NotaInvalidaException;
 import clubeleitura.excecao.PrazoDesafioExpiradoException;
 import clubeleitura.modelo.Capitulo;
 import clubeleitura.modelo.Clube;
@@ -20,8 +19,8 @@ public class Main {
         System.out.println("=== Clube de Leitura Gamificado ===\n");
 
         Livro livro = new Livro("Dom Casmurro", "Machado de Assis");
-        Capitulo capitulo1 = new Capitulo(1, 20);
-        Capitulo capitulo2 = new Capitulo(2, 15);
+        Capitulo capitulo1 = new Capitulo(1, "Capitulo 1", 1, 20);
+        Capitulo capitulo2 = new Capitulo(2, "Capitulo 2", 21, 35);
         livro.adicionarCapitulo(capitulo1);
         livro.adicionarCapitulo(capitulo2);
 
@@ -44,7 +43,7 @@ public class Main {
             System.out.println("--- Tentativas invalidas (exibindo o tratamento de excecoes) ---");
             forcarCapituloInvalido(ana, capitulo1);
             forcarPrazoExpirado(desafio, ana, capitulo1);
-            forcarNotaInvalida(livro);
+            forcarCodigoGrupoInvalido();
 
             System.out.println("\n--- Ranking do Clube (polimorfismo dinamico) ---");
             imprimirRanking(clube, List.of(ana, bruno));
@@ -52,29 +51,30 @@ public class Main {
             System.out.println("\n--- Ranking do Desafio (polimorfismo dinamico) ---");
             imprimirRanking(desafio, List.of(ana, bruno));
 
+            System.out.println("\n--- Streak e progresso atual (bloco Membro) ---");
+            imprimirProgresso(ana);
+            imprimirProgresso(bruno);
+
         } catch (CodigoGrupoInvalidoException e) {
             System.out.println("Nao foi possivel criar o grupo: " + e.getMessage());
         }
-
-        System.out.println("\n--- Codigo de grupo invalido (exibindo o tratamento de excecoes) ---");
-        forcarCodigoGrupoInvalido();
     }
 
     private static void registrarLeiturasDeExemplo(Membro ana, Membro bruno, Capitulo capitulo) {
         try {
             for (int diasAtras = 4; diasAtras >= 0; diasAtras--) {
                 LocalDate data = LocalDate.now().minusDays(diasAtras);
-                ana.registrarLeitura(5 + diasAtras, capitulo, data);
+                ana.registrarProgresso(5 + diasAtras, capitulo, data, null);
             }
-            bruno.registrarLeitura(10, capitulo);
-        } catch (CapituloInvalidoException e) {
+            bruno.registrarProgresso(10, capitulo, "Comecei devagar, mas vou acelerar.");
+        } catch (CapituloInvalidoException | PrazoDesafioExpiradoException e) {
             System.out.println("Erro ao registrar leitura de exemplo: " + e.getMessage());
         }
     }
 
     private static void forcarCapituloInvalido(Membro membro, Capitulo capitulo) {
         try {
-            membro.registrarLeitura(999, capitulo);
+            membro.registrarProgresso(999, capitulo);
         } catch (CapituloInvalidoException e) {
             System.out.println("[CapituloInvalidoException] " + e.getMessage());
         }
@@ -85,14 +85,6 @@ public class Main {
             desafio.registrarLeitura(membro, 5, capitulo, LocalDate.now().plusDays(20));
         } catch (PrazoDesafioExpiradoException | CapituloInvalidoException e) {
             System.out.println("[PrazoDesafioExpiradoException] " + e.getMessage());
-        }
-    }
-
-    private static void forcarNotaInvalida(Livro livro) {
-        try {
-            livro.avaliar(15);
-        } catch (NotaInvalidaException e) {
-            System.out.println("[NotaInvalidaException] " + e.getMessage());
         }
     }
 
@@ -109,5 +101,12 @@ public class Main {
             double pontuacao = grupo.calcularRanking(membro);
             System.out.printf("%s: %.1f pontos%n", membro.getNome(), pontuacao);
         }
+    }
+
+    private static void imprimirProgresso(Membro membro) {
+        Capitulo capituloAtual = membro.getCapituloAtual();
+        String nomeCapitulo = capituloAtual == null ? "nenhum" : capituloAtual.getTitulo();
+        System.out.printf("%s: streak de %d dia(s), capitulo atual: %s%n",
+                membro.getNome(), membro.calcularStreak(), nomeCapitulo);
     }
 }

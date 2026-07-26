@@ -17,7 +17,7 @@ public class Clube extends Grupo {
     @Override
     public double calcularRanking(Membro membro) {
         int totalPaginas = 0;
-        for (RegistroLeitura registro : membro.getRegistros()) {
+        for (RegistroProgresso registro : membro.getRegistros()) {
             totalPaginas += registro.getPaginasLidas();
         }
         return totalPaginas + (calcularStreak(membro) * PONTOS_POR_DIA_DE_STREAK);
@@ -25,7 +25,7 @@ public class Clube extends Grupo {
 
     public int calcularStreak(Membro membro) {
         TreeSet<LocalDate> datasUnicas = new TreeSet<>(Comparator.reverseOrder());
-        for (RegistroLeitura registro : membro.getRegistros()) {
+        for (RegistroProgresso registro : membro.getRegistros()) {
             datasUnicas.add(registro.getData());
         }
 

@@ -21,7 +21,7 @@ public class Desafio extends Grupo {
     @Override
     public double calcularRanking(Membro membro) {
         int totalPaginas = 0;
-        for (RegistroLeitura registro : membro.getRegistros()) {
+        for (RegistroProgresso registro : membro.getRegistros()) {
             totalPaginas += registro.getPaginasLidas();
         }
 
@@ -29,14 +29,14 @@ public class Desafio extends Grupo {
         return Math.min(percentual, 100.0);
     }
 
-    public RegistroLeitura registrarLeitura(Membro membro, int paginas, Capitulo capitulo, LocalDate data)
+    public RegistroProgresso registrarLeitura(Membro membro, int paginas, Capitulo capitulo, LocalDate data)
             throws PrazoDesafioExpiradoException, CapituloInvalidoException {
         if (data.isAfter(prazoFinal)) {
             throw new PrazoDesafioExpiradoException(
                     "O prazo do desafio '" + getNome() + "' expirou em " + prazoFinal
                             + ", nao e possivel registrar leitura em " + data + ".");
         }
-        return membro.registrarLeitura(paginas, capitulo, data);
+        return membro.registrarProgresso(paginas, capitulo, data, prazoFinal);
     }
 
     public LocalDate getPrazoFinal() {
