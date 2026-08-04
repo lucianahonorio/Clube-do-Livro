@@ -20,13 +20,7 @@ public class Desafio extends Grupo {
 
     @Override
     public double calcularPontuacao(Membro membro) {
-        int totalPaginas = 0;
-        for (RegistroProgresso registro : membro.getRegistros()) {
-            totalPaginas += registro.getPaginasLidas();
-        }
-
-        double percentual = (totalPaginas * 100.0) / metaPaginas;
-        return Math.min(percentual, 100.0);
+        return membro.calcularStreak();
     }
 
     public RegistroProgresso registrarLeitura(Membro membro, int paginas, Capitulo capitulo, LocalDate data)
