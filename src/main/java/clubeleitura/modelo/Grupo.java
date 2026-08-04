@@ -27,7 +27,15 @@ public abstract class Grupo {
         }
     }
 
-    public abstract double calcularRanking(Membro membro);
+    public abstract double calcularPontuacao(Membro membro);
+
+    public double calcularRanking(Membro membro) {
+        return calcularPontuacao(membro);
+    }
+
+    public List<Membro> getRanking() {
+        return List.of();
+    }
 
     public String getCodigo() {
         return codigo;

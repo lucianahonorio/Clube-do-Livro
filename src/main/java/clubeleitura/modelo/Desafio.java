@@ -19,7 +19,7 @@ public class Desafio extends Grupo {
     }
 
     @Override
-    public double calcularRanking(Membro membro) {
+    public double calcularPontuacao(Membro membro) {
         int totalPaginas = 0;
         for (RegistroProgresso registro : membro.getRegistros()) {
             totalPaginas += registro.getPaginasLidas();
