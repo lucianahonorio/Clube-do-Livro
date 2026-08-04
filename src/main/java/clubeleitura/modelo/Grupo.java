@@ -23,6 +23,10 @@ public abstract class Grupo {
     }
 
     public void adicionarMembro(Membro membro) {
+        if (membro == null) {
+            throw new IllegalArgumentException("O membro nao pode ser nulo.");
+        }
+
         if (!membros.contains(membro)) {
             membros.add(membro);
         }
@@ -37,13 +41,12 @@ public abstract class Grupo {
     public List<Membro> getRanking() {
         List<Membro> ranking = new ArrayList<>(membros);
 
-        Comparator<Membro> comparador =
-                Comparator.comparingDouble(
-                                (Membro membro) -> calcularPontuacao(membro))
-                        .reversed()
-                        .thenComparing(
-                                Membro::getNome,
-                                String.CASE_INSENSITIVE_ORDER);
+        Comparator<Membro> comparador = Comparator.comparingDouble(
+                (Membro membro) -> calcularPontuacao(membro))
+                .reversed()
+                .thenComparing(
+                        Membro::getNome,
+                        String.CASE_INSENSITIVE_ORDER);
 
         ranking.sort(comparador);
         return List.copyOf(ranking);
@@ -58,7 +61,7 @@ public abstract class Grupo {
     }
 
     public List<Membro> getMembros() {
-        return membros;
+        return List.copyOf(membros);
     }
 
     public Livro getLivroAtual() {
