@@ -3,6 +3,7 @@ package clubeleitura.modelo;
 import clubeleitura.excecao.CodigoGrupoInvalidoException;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public abstract class Grupo {
@@ -34,7 +35,18 @@ public abstract class Grupo {
     }
 
     public List<Membro> getRanking() {
-        return List.of();
+        List<Membro> ranking = new ArrayList<>(membros);
+
+        Comparator<Membro> comparador =
+                Comparator.comparingDouble(
+                                (Membro membro) -> calcularPontuacao(membro))
+                        .reversed()
+                        .thenComparing(
+                                Membro::getNome,
+                                String.CASE_INSENSITIVE_ORDER);
+
+        ranking.sort(comparador);
+        return List.copyOf(ranking);
     }
 
     public String getCodigo() {

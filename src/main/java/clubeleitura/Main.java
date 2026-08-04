@@ -15,7 +15,6 @@ import clubeleitura.modelo.Membro;
 import clubeleitura.modelo.SeedDeTeste;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class Main {
 
@@ -34,8 +33,8 @@ public class Main {
         try {
             Clube clube = new Clube("CLB01", "Leitores Assiduos");
             clube.setLivroAtual(livro);
-            clube.adicionarMembro(ana);
             clube.adicionarMembro(bruno);
+            clube.adicionarMembro(ana);
 
             Desafio desafio = new Desafio("DES01", "Desafio 10 Dias", LocalDate.now().plusDays(10), 200);
             desafio.setLivroAtual(livro);
@@ -50,10 +49,10 @@ public class Main {
             forcarCodigoGrupoInvalido();
 
             System.out.println("\n--- Ranking do Clube (polimorfismo dinamico) ---");
-            imprimirRanking(clube, List.of(ana, bruno));
+            imprimirRanking(clube);
 
             System.out.println("\n--- Ranking do Desafio (polimorfismo dinamico) ---");
-            imprimirRanking(desafio, List.of(ana, bruno));
+            imprimirRanking(desafio);
 
             System.out.println("\n--- Streak e progresso atual (bloco Membro) ---");
             imprimirProgresso(ana);
@@ -103,9 +102,9 @@ public class Main {
         }
     }
 
-    private static void imprimirRanking(Grupo grupo, List<Membro> membros) {
-        for (Membro membro : membros) {
-            double pontuacao = grupo.calcularRanking(membro);
+    private static void imprimirRanking(Grupo grupo) {
+        for (Membro membro : grupo.getRanking()) {
+            double pontuacao = grupo.calcularPontuacao(membro);
             System.out.printf("%s: %.1f pontos%n", membro.getNome(), pontuacao);
         }
     }
@@ -121,7 +120,7 @@ public class Main {
         SeedDeTeste.Cenario cenario = SeedDeTeste.criarCenarioCompleto();
 
         System.out.println("Ranking do clube (Binding 13):");
-        for (Membro membro : cenario.getMembros()) {
+        for (Membro membro : cenario.getClube().getRanking()) {
             double pontos = cenario.getClube().calcularRanking(membro);
             System.out.printf("%s: %.1f pontos%n", membro.getNome(), pontos);
         }
