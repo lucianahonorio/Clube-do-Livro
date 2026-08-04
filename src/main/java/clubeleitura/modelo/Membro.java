@@ -85,7 +85,7 @@ public class Membro {
     public RegistroProgresso getUltimoRegistro() {
         RegistroProgresso ultimo = null;
         for (RegistroProgresso registro : registros) {
-            if (ultimo == null || registro.getData().isAfter(ultimo.getData())) {
+            if (ultimo == null || !registro.getData().isBefore(ultimo.getData())) {
                 ultimo = registro;
             }
         }
