@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>the book club · mockups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+/* =========================================================
+   DESIGN TOKENS
+   ========================================================= */
+:root {
+  --rose-primary: #D1284F;
+  --rose-primary-dark: #A81A3E;
+  --plum-ink: #312736;
+  --plum-soft: #4A3B4F;
+  --rose-mid: #D4838F;
+  --rose-dust: #D6ABB1;
+  --rose-whisper: #F3E1E5;
+  --mint-fresh: #C4FFEB;
+  --mint-shadow: #8AD9BE;
+  --paper: #FAF5EF;
+  --paper-warm: #F5EDE0;
+  --paper-shadow: #E9E1D6;
+  --bg-app: #DCEAE6;         /* sage tint · app background */
+  --bg-app-warm: #CFE1DC;    /* slightly deeper sage for depth */
+  --fog: #D9D9D9;
+  --shadow-rose: 0 8px 24px -8px rgba(209,40,79,0.28);
+  --shadow-soft: 0 4px 16px -4px rgba(49,39,54,0.15);
+  --shadow-lift: 0 12px 40px -12px rgba(49,39,54,0.25);
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-script: 'Dancing Script', cursive;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+
+/* =========================================================
+   BASE
+   ========================================================= */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg-app);
+  color: var(--plum-ink);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+/* Paper texture — subtle SVG noise everywhere */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.19  0 0 0 0 0.15  0 0 0 0 0.21  0 0 0 0.045 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: 0.6;
+  z-index: 1;
+  mix-blend-mode: multiply;
+}
+
+/* =========================================================
+   TOP NAV — screen selector
+   ========================================================= */
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(248, 251, 250, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px dashed var(--rose-dust);
+  padding: 14px 40px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.topnav .brand {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  font-size: 20px;
+  letter-spacing: -0.5px;
+  color: var(--plum-ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.topnav .brand::before {
+  content: '❦';
+  color: var(--rose-primary);
+  font-size: 22px;
+}
+.topnav nav {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+.topnav nav a {
+  text-decoration: none;
+  color: var(--plum-soft);
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 8px 16px;
+  border-radius: 100px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+.topnav nav a:hover {
+  color: var(--rose-primary);
+  background: var(--rose-whisper);
+}
+
+/* =========================================================
+   SCREEN — full-width section
+   ========================================================= */
+.screen {
+  position: relative;
+  z-index: 2;
+  padding: 80px 40px 120px;
+  border-bottom: 1px dashed var(--rose-dust);
+  min-height: 90vh;
+}
+.screen-tag {
+  display: inline-block;
+  font-family: var(--font-script);
+  font-size: 22px;
+  color: var(--rose-primary);
+  margin-bottom: 8px;
+}
+.screen-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(44px, 6vw, 88px);
+  line-height: 0.95;
+  letter-spacing: -2px;
+  color: var(--plum-ink);
+  margin-bottom: 12px;
+}
+.screen-title em { font-style: italic; font-weight: 400; color: var(--rose-primary); }
+.screen-sub {
+  font-size: 15px;
+  color: var(--plum-soft);
+  max-width: 620px;
+  margin-bottom: 56px;
+}
+
+/* =========================================================
+   HOME — ticket grid
+   ========================================================= */
+.home {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* GINGHAM HERO — picnic blanket peeking behind the header */
+.home-hero {
+  position: relative;
+  padding: 56px 48px 72px;
+  margin-bottom: 56px;
+  border-radius: 8px;
+  /* fabric weave: 2 crossing 50% stripes create 3-tone gingham (light/mid/dark) */
+  background-color: #EDBCC8;
+  background-image:
+    /* subtle fabric grain */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='w'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='4'/><feColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.10  0 0 0 0 0.16  0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23w)'/></svg>"),
+    /* horizontal red stripes at 50% */
+    linear-gradient(0deg, rgba(139, 26, 44, 0.62) 50%, transparent 50%),
+    /* vertical red stripes at 50% — crossing gives the checker weave */
+    linear-gradient(90deg, rgba(139, 26, 44, 0.62) 50%, transparent 50%);
+  background-size: 240px 240px, 56px 56px, 56px 56px;
+  background-blend-mode: multiply, normal, normal;
+  box-shadow:
+    inset 0 0 60px rgba(60, 10, 20, 0.18),
+    0 20px 60px -20px rgba(139, 26, 44, 0.35);
+}
+
+/* frayed edge — a subtle "cloth hangs over" feel using dashed border */
+.home-hero::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px dashed rgba(250, 245, 239, 0.4);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* little "cloth pin" decoration in corners */
+.home-hero::after {
+  content: '✿';
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  font-size: 20px;
+  color: rgba(250, 245, 239, 0.85);
+  text-shadow: 0 2px 4px rgba(60, 10, 20, 0.4);
+  pointer-events: none;
+}
+
+/* the header content itself sits on a paper card floating on the gingham */
+.home-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 28px;
+  padding: 52px 48px 48px;
+  background: var(--paper);
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 20px 40px -16px rgba(60, 10, 20, 0.35),
+    0 2px 0 rgba(255, 255, 255, 0.6) inset;
+  transform: rotate(-0.4deg);
+}
+.home-header-left {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.home-header-left .screen-sub { margin: 0 auto; }
+.home-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+/* wash-tape corners can't be clipped by overflow:hidden — pin them outside via a decorative wrapper */
+.home-hero .tape {
+  position: absolute;
+  width: 60px;
+  height: 22px;
+  background: rgba(250, 245, 239, 0.72);
+  border: 1px dashed rgba(139, 26, 44, 0.25);
+  box-shadow: 0 2px 6px rgba(60, 10, 20, 0.15);
+  z-index: 5;
+}
+.home-hero .tape.l { top: 46px; left: 78px; transform: rotate(-6deg); }
+.home-hero .tape.r { top: 46px; right: 92px; transform: rotate(4deg); }
+
+.stat-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px 40px;
+  padding: 26px 48px;
+  background: var(--paper-warm);
+  border: 1px solid var(--paper-shadow);
+  border-radius: 4px;
+  margin-bottom: 48px;
+  position: relative;
+}
+.stat-strip::before, .stat-strip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px; height: 14px;
+  background: var(--bg-app);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.stat-strip::before { left: -7px; }
+.stat-strip::after { right: -7px; }
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1 1 auto;
+  min-width: 110px;
+}
+.stat .n {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--rose-primary);
+}
+.stat .l {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  color: var(--plum-soft);
+  font-weight: 500;
+}
+.stat + .stat { border-left: 1px dashed var(--rose-dust); padding-left: 40px; }
+
+/* THE TICKET CARD — a work of art */
+.ticket-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 32px;
+}
+
+.ticket {
+  --tint: var(--rose-dust);
+  --tint-deep: var(--rose-mid);
+  position: relative;
+  background: var(--paper);
+  border-radius: 6px;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+.ticket:hover {
+  transform: translateY(-6px) rotate(-0.8deg);
+  box-shadow: var(--shadow-lift);
+}
+/* Default palette (overridden by pattern variants below) */
+.ticket.desafio {
+  --tint: #E5C6CE;
+  --tint-deep: var(--rose-mid);
+}
+.ticket.clube {
+  --tint: #DDE9E1;
+  --tint-deep: #8AB79C;
+}
+
+/* ---- PATTERN VARIANT 1 · vertical blue & cream stripes ---- */
+.ticket.pat-stripes-blue {
+  --tint: #EEE6D2;         /* cream base */
+  --tint-deep: #8FA6C0;    /* denim blue for book */
+}
+.ticket.pat-stripes-blue .ticket-head {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #EFE8D3 0px, #EFE8D3 20px,
+      #B8CADE 20px, #B8CADE 40px
+    );
+}
+.ticket.pat-stripes-blue .ticket-perf { background: #B8CADE; }
+
+/* ---- PATTERN VARIANT 2 · pink woven linen ---- */
+.ticket.pat-dots-pink {
+  --tint: #EBB4C4;
+  --tint-deep: #B8506A;    /* rose spine to echo the linen */
+}
+.ticket.pat-dots-pink .ticket-head {
+  background-color: #EBB4C4;
+  /* layered: horizontal weave + vertical weave + organic fabric grain */
+  background-image:
+    repeating-linear-gradient(0deg,
+      rgba(255,255,255,0.28) 0 1px,
+      transparent 1px 3px),
+    repeating-linear-gradient(90deg,
+      rgba(139,26,60,0.10) 0 1px,
+      transparent 1px 3px),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='lin'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.15  0 0 0 0 0.28  0 0 0 0.32 0'/></filter><rect width='100%25' height='100%25' filter='url(%23lin)'/></svg>");
+  background-size: auto, auto, 260px 260px;
+  background-blend-mode: normal, normal, multiply;
+}
+.ticket.pat-dots-pink .ticket-perf { background: #EBB4C4; }
+
+/* ---- PATTERN VARIANT 3 · butter yellow with pink stars ---- */
+.ticket.pat-stars-butter {
+  --tint: #F4EBB6;
+  --tint-deep: #C89A3E;    /* mustard spine */
+}
+.ticket.pat-stars-butter .ticket-head {
+  background-color: #F4EBB6;
+  /* small pink stars via SVG data URI, staggered rows */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><g fill='%23D07AA0'><polygon points='15,4 17.3,10.9 24.5,10.9 18.6,15.2 20.9,22.1 15,17.8 9.1,22.1 11.4,15.2 5.5,10.9 12.7,10.9'/><polygon points='45,34 47.3,40.9 54.5,40.9 48.6,45.2 50.9,52.1 45,47.8 39.1,52.1 41.4,45.2 35.5,40.9 42.7,40.9'/></g></svg>");
+  background-size: 60px 60px;
+}
+.ticket.pat-stars-butter .ticket-perf { background: #F4EBB6; }
+
+/* Ticket header with tint (base — used only when no pattern variant is set) */
+.ticket-head {
+  background: var(--tint);
+  padding: 22px 26px 20px;
+  position: relative;
+  border-bottom: 2px dashed var(--paper);
+  overflow: hidden;
+}
+.ticket-type {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--plum-ink);
+  opacity: 0.65;
+  margin-bottom: 4px;
+  position: relative;
+}
+.ticket-name {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--plum-ink);
+  position: relative;
+  letter-spacing: -0.5px;
+}
+.ticket-name em {
+  font-family: var(--font-script);
+  font-weight: 500;
+  font-size: 24px;
+  font-style: normal;
+  color: var(--rose-primary);
+  display: block;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+/* Perforation between head and body */
+.ticket-perf {
+  position: relative;
+  height: 12px;
+  background: var(--tint);
+}
+.ticket-perf::before, .ticket-perf::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background: var(--paper);
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+.ticket-perf::before { left: -10px; }
+.ticket-perf::after { right: -10px; }
+.ticket-perf-dots {
+  position: absolute;
+  left: 20px; right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-top: 2px dashed var(--paper);
+}
+
+.ticket-body {
+  padding: 24px 26px 22px;
+  background: var(--paper);
+}
+.ticket-book {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--paper-shadow);
+  margin-bottom: 14px;
+}
+.book-spine {
+  width: 34px;
+  height: 48px;
+  background: var(--tint-deep);
+  border-radius: 2px 4px 4px 2px;
+  position: relative;
+  box-shadow: -2px 2px 0 var(--plum-ink);
+  flex-shrink: 0;
+}
+.book-spine::before {
+  content: '';
+  position: absolute;
+  left: 2px; top: 4px; bottom: 4px;
+  width: 2px;
+  background: rgba(0,0,0,0.15);
+}
+.book-spine::after {
+  content: '';
+  position: absolute;
+  left: 4px; right: 4px;
+  top: 10px;
+  height: 1px;
+  background: rgba(255,255,255,0.4);
+  box-shadow: 0 26px 0 rgba(255,255,255,0.4);
+}
+.book-info { flex: 1; min-width: 0; }
+.book-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--plum-ink);
+  line-height: 1.2;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.book-author {
+  font-size: 12px;
+  color: var(--plum-soft);
+  font-style: italic;
+}
+
+.ticket-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.ticket-members {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.avatar-stack {
+  display: flex;
+}
+.av {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--rose-dust);
+  border: 2px solid var(--paper);
+  margin-left: -8px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--plum-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+.av:first-child { margin-left: 0; }
+.av.a { background: #E9BFC7; }
+.av.b { background: #C4E5D4; }
+.av.c { background: #F0D9B5; }
+.av.d { background: #C7CFEA; }
+
+.members-count {
+  font-size: 12px;
+  color: var(--plum-soft);
+  font-weight: 500;
+}
+
+.ticket-footer {
+  padding: 14px 26px;
+  background: var(--paper-warm);
+  border-top: 1px dashed var(--paper-shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--plum-soft);
+  font-weight: 600;
+}
+.ticket-footer .code { font-family: monospace; letter-spacing: 2px; }
+.ticket-footer .go {
+  color: var(--rose-primary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: gap 0.2s;
+}
+.ticket:hover .ticket-footer .go { gap: 10px; }
+
+/* Streak badge (mint accent) */
+.streak-badge {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: var(--mint-fresh);
+  border: 1px solid var(--mint-shadow);
+  color: var(--plum-ink);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 5px 10px;
+  border-radius: 100px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transform: rotate(4deg);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+.btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 14px 24px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+.btn-primary {
+  background: var(--rose-primary);
+  color: var(--paper);
+  box-shadow: var(--shadow-rose);
+}
+.btn-primary:hover {
+  background: var(--rose-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px -8px rgba(209,40,79,0.4);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--plum-ink);
+  border: 1.5px solid var(--plum-ink);
+}
+.btn-ghost:hover {
+  background: var(--plum-ink);
+  color: var(--paper);
+}
+
+/* =========================================================
+   DIVIDER decorative
+   ========================================================= */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--rose-dust);
+  margin: 60px auto;
+  max-width: 1280px;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, var(--rose-dust) 0 4px, transparent 4px 10px);
+}
+.divider .ornament {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--rose-primary);
+  letter-spacing: 3px;
+}
+
+/* =========================================================
+   RANKING — split view (Clube vs Desafio)
+   ========================================================= */
+.ranking-wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.ranking-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 28px;
+  background: var(--plum-ink);
+  color: var(--paper);
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+.ranking-header-bar .lbl {
+  font-family: var(--font-script);
+  color: var(--rose-dust);
+  font-size: 20px;
+}
+.ranking-header-bar .lbl-bold {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 18px;
+  margin-left: 8px;
+}
+.ranking-note {
+  font-size: 12px;
+  color: var(--plum-soft);
+  margin-bottom: 32px;
+  text-align: center;
+  font-style: italic;
+}
+.ranking-note strong {
+  color: var(--rose-primary);
+  font-style: normal;
+  font-weight: 700;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  align-items: start;
+}
+/* ---- SPLIT-COL as lilac gingham panel (same as Home hero, purple tint) ---- */
+.split-col {
+  padding: 56px 40px 48px;
+  border-radius: 8px;
+  position: relative;
+  background-color: #EDE4F5;
+  background-image:
+    /* soft fabric grain */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='wl'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='9'/><feColorMatrix values='0 0 0 0 0.42  0 0 0 0 0.35  0 0 0 0 0.62  0 0 0 0.16 0'/></filter><rect width='100%25' height='100%25' filter='url(%23wl)'/></svg>"),
+    /* horizontal lilac stripes at 50% */
+    linear-gradient(0deg, rgba(160, 130, 210, 0.48) 50%, transparent 50%),
+    /* vertical lilac stripes at 50% — crossing gives the gingham weave */
+    linear-gradient(90deg, rgba(160, 130, 210, 0.48) 50%, transparent 50%);
+  background-size: 240px 240px, 56px 56px, 56px 56px;
+  background-blend-mode: multiply, normal, normal;
+  box-shadow:
+    inset 0 0 60px rgba(80, 60, 130, 0.18),
+    0 20px 60px -20px rgba(80, 60, 130, 0.32);
+}
+/* frayed inner border (bainha) */
+.split-col::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px dashed rgba(250, 245, 239, 0.55);
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 0;
+}
+/* both variants share the same gingham; polymorphism is proved by using the SAME container */
+.split-col.clube, .split-col.desafio { }
+
+/* sage green gingham variant — same technique, different hue */
+.split-col.sage {
+  background-color: #EEF5EA;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='ws'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='11'/><feColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.52  0 0 0 0 0.38  0 0 0 0.16 0'/></filter><rect width='100%25' height='100%25' filter='url(%23ws)'/></svg>"),
+    linear-gradient(0deg, rgba(150, 200, 160, 0.42) 50%, transparent 50%),
+    linear-gradient(90deg, rgba(150, 200, 160, 0.42) 50%, transparent 50%);
+  background-size: 240px 240px, 56px 56px, 56px 56px;
+  background-blend-mode: multiply, normal, normal;
+  box-shadow:
+    inset 0 0 60px rgba(60, 100, 70, 0.15),
+    0 20px 60px -20px rgba(60, 100, 70, 0.28);
+}
+.split-col.sage > .tape {
+  border-color: rgba(90, 140, 100, 0.3);
+  box-shadow: 0 2px 6px rgba(60, 100, 70, 0.15);
+}
+.split-col.sage .rank-header {
+  box-shadow:
+    0 18px 34px -14px rgba(60, 100, 70, 0.32),
+    0 2px 0 rgba(255, 255, 255, 0.6) inset;
+}
+.split-col.sage .rank-row::before,
+.split-col.sage .rank-row::after {
+  background: #DDEBD8;
+}
+
+/* washi tape corners */
+.split-col > .tape {
+  position: absolute;
+  width: 56px;
+  height: 20px;
+  background: rgba(250, 245, 239, 0.72);
+  border: 1px dashed rgba(120, 90, 180, 0.3);
+  box-shadow: 0 2px 6px rgba(80, 60, 130, 0.18);
+  z-index: 5;
+}
+.split-col > .tape.l { top: 42px; left: 56px; transform: rotate(-6deg); }
+.split-col > .tape.r { top: 42px; right: 56px; transform: rotate(4deg); }
+
+/* the header text sits on a paper card floating on the gingham */
+.rank-header {
+  padding: 30px 32px 26px;
+  background: var(--paper);
+  border-radius: 6px;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 32px;
+  text-align: center;
+  transform: rotate(-0.5deg);
+  box-shadow:
+    0 18px 34px -14px rgba(80, 60, 130, 0.35),
+    0 2px 0 rgba(255, 255, 255, 0.6) inset;
+}
+.rank-header .tipo,
+.rank-header .nome,
+.rank-header .regra { margin-bottom: 0; }
+.rank-header .nome { margin: 4px 0 8px; }
+
+/* rows need to sit above the gingham decoration */
+.split-col .rank-list { position: relative; z-index: 2; }
+/* update the notch semicircle color to match lilac gingham blend */
+.split-col .rank-row::before,
+.split-col .rank-row::after {
+  background: #E4D8F0;
+}
+.split-vs {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.vs-mark {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 900;
+  font-size: 48px;
+  color: var(--rose-primary);
+  position: relative;
+}
+.vs-mark::before, .vs-mark::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  height: 60px;
+  background: var(--rose-dust);
+  transform: translateX(-50%);
+}
+.vs-mark::before { bottom: 100%; margin-bottom: 20px; }
+.vs-mark::after { top: 100%; margin-top: 20px; }
+
+.split-col .tipo {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--plum-soft);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.split-col .nome {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -1px;
+  color: var(--plum-ink);
+  margin-bottom: 8px;
+}
+.split-col .regra {
+  font-family: var(--font-script);
+  color: var(--rose-primary);
+  font-size: 20px;
+  margin-bottom: 32px;
+}
+
+.rank-list { display: flex; flex-direction: column; gap: 10px; }
+
+.rank-row {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  background: var(--paper);
+  border-radius: 4px;
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  transition: transform 0.2s;
+}
+.rank-row::before, .rank-row::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  background: var(--paper-warm);
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+.rank-row::before { left: -6px; }
+.rank-row::after { right: -6px; }
+.rank-row:hover { transform: translateX(4px); }
+
+.medal {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 22px;
+  color: var(--plum-ink);
+  text-align: center;
+  line-height: 1;
+}
+.medal.gold { color: var(--rose-primary); }
+.medal.silver { color: var(--rose-mid); }
+.medal.bronze { color: #B08968; }
+.medal .oz {
+  display: block;
+  font-family: var(--font-script);
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--plum-soft);
+  margin-top: -2px;
+}
+.rank-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17px;
+  color: var(--plum-ink);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.rank-name .avatar-mini {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--rose-dust);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+.rank-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--rose-primary);
+  text-align: right;
+  line-height: 1;
+}
+.rank-value .u {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--plum-soft);
+  margin-top: 3px;
+}
+
+.polymorphism-callout {
+  margin-top: 48px;
+  padding: 32px 40px;
+  background: var(--plum-ink);
+  color: var(--paper);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.polymorphism-callout::before {
+  content: 'polymorphism';
+  position: absolute;
+  right: -30px;
+  bottom: -60px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  font-size: 200px;
+  color: rgba(212,131,143,0.08);
+  pointer-events: none;
+  line-height: 1;
+}
+.polymorphism-callout .k {
+  font-family: var(--font-script);
+  color: var(--rose-dust);
+  font-size: 22px;
+  margin-bottom: 8px;
+  position: relative;
+}
+.polymorphism-callout h3 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 28px;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  position: relative;
+}
+.polymorphism-callout p {
+  font-size: 14px;
+  color: rgba(250,245,239,0.7);
+  max-width: 620px;
+  position: relative;
+}
+.polymorphism-callout code {
+  background: rgba(212,131,143,0.2);
+  color: var(--rose-dust);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* =========================================================
+   CAPITULO screen (comment + spoiler)
+   ========================================================= */
+.cap-wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 48px;
+}
+
+.cap-side {
+  background: var(--paper);
+  border-radius: 6px;
+  padding: 32px 28px;
+  box-shadow: var(--shadow-soft);
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.book-hero {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 24px;
+  border-bottom: 1px dashed var(--paper-shadow);
+  margin-bottom: 24px;
+}
+.book-hero .cover {
+  width: 68px;
+  height: 96px;
+  background: linear-gradient(135deg, var(--rose-primary), var(--rose-primary-dark));
+  border-radius: 2px 6px 6px 2px;
+  box-shadow: -3px 4px 0 var(--plum-ink), 0 6px 20px -6px rgba(49,39,54,0.3);
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.book-hero .cover::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 2px;
+}
+.book-hero .cover::after {
+  content: 'B13';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  color: var(--paper);
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+.book-hero .meta { flex: 1; }
+.book-hero .t {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.1;
+  color: var(--plum-ink);
+  margin-bottom: 4px;
+}
+.book-hero .a {
+  font-family: var(--font-script);
+  color: var(--rose-primary);
+  font-size: 16px;
+}
+
+.progress-block {
+  margin-bottom: 24px;
+}
+.progress-lbl {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--plum-soft);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.progress-bar {
+  height: 8px;
+  background: var(--paper-shadow);
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+}
+.progress-fill {
+  height: 100%;
+  width: 45%;
+  background: linear-gradient(90deg, var(--rose-primary), var(--rose-mid));
+  border-radius: 100px;
+  position: relative;
+}
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  background: var(--paper);
+  border: 2px solid var(--rose-primary);
+  border-radius: 50%;
+}
+.progress-num {
+  margin-top: 10px;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--plum-ink);
+}
+.progress-num em {
+  font-family: var(--font-script);
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--rose-primary);
+  font-style: normal;
+  margin-left: 4px;
+}
+
+.chapters {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.chapters .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--plum-soft);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.chap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 3px;
+  font-size: 13px;
+  color: var(--plum-soft);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.chap:hover { background: var(--rose-whisper); }
+.chap .marker {
+  width: 12px;
+  height: 16px;
+  background: var(--paper-shadow);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 75%, 0 100%);
+  flex-shrink: 0;
+}
+.chap.read { color: var(--plum-ink); }
+.chap.read .marker { background: var(--rose-mid); }
+.chap.current {
+  background: var(--rose-whisper);
+  color: var(--plum-ink);
+  font-weight: 600;
+}
+.chap.current .marker { background: var(--rose-primary); }
+.chap .n {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+/* MAIN column */
+.cap-main {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.chapter-card {
+  background: var(--paper);
+  border-radius: 6px;
+  padding: 40px 44px;
+  box-shadow: var(--shadow-soft);
+  position: relative;
+}
+.chapter-card::before {
+  content: '❋';
+  position: absolute;
+  top: 20px;
+  right: 28px;
+  color: var(--rose-dust);
+  font-size: 20px;
+}
+.chapter-num {
+  font-family: var(--font-script);
+  color: var(--rose-primary);
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+.chapter-name {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 40px;
+  letter-spacing: -1px;
+  color: var(--plum-ink);
+  margin-bottom: 6px;
+}
+.chapter-pages {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--plum-soft);
+  font-weight: 500;
+}
+
+.register-form {
+  margin-top: 28px;
+  padding: 24px;
+  background: var(--paper-warm);
+  border: 1px dashed var(--rose-dust);
+  border-radius: 4px;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 14px;
+  align-items: end;
+}
+.field label {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  color: var(--plum-soft);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.field input, .field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--paper);
+  border: 1.5px solid var(--paper-shadow);
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--plum-ink);
+  transition: border 0.2s;
+}
+.field input:focus, .field textarea:focus {
+  outline: none;
+  border-color: var(--rose-primary);
+}
+
+/* COMMENTS */
+.comments-block h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--plum-ink);
+  margin-bottom: 4px;
+}
+.comments-block .sub {
+  font-family: var(--font-script);
+  color: var(--rose-primary);
+  font-size: 18px;
+  margin-bottom: 24px;
+}
+
+.comment {
+  padding: 22px 26px;
+  background: var(--paper);
+  border-radius: 6px;
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 14px;
+  position: relative;
+}
+.comment-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.comment-head .av {
+  width: 34px; height: 34px;
+  margin: 0;
+  font-size: 13px;
+}
+.comment-head .who {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--plum-ink);
+}
+.comment-head .when {
+  font-family: var(--font-script);
+  color: var(--plum-soft);
+  font-size: 14px;
+  margin-left: auto;
+}
+.comment-head .badge {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-weight: 700;
+  background: var(--mint-fresh);
+  color: var(--plum-ink);
+  border: 1px solid var(--mint-shadow);
+}
+.comment-text {
+  font-size: 15px;
+  color: var(--plum-ink);
+  line-height: 1.55;
+}
+.comment-chapter-tag {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--plum-soft);
+  font-weight: 600;
+}
+.comment-chapter-tag::before {
+  content: '❦';
+  color: var(--rose-primary);
+  margin-right: 6px;
+}
+
+/* SPOILER hidden comment — the money shot */
+.comment.hidden {
+  background:
+    repeating-linear-gradient(
+      45deg,
+      var(--rose-dust) 0,
+      var(--rose-dust) 8px,
+      var(--rose-whisper) 8px,
+      var(--rose-whisper) 16px
+    );
+  overflow: hidden;
+  cursor: not-allowed;
+}
+.comment.hidden .comment-head .when { opacity: 0.55; }
+.comment.hidden .lock-panel {
+  padding: 24px;
+  background: rgba(250,245,239,0.94);
+  border-radius: 4px;
+  border: 1.5px dashed var(--rose-primary);
+  text-align: center;
+  backdrop-filter: blur(2px);
+}
+.comment.hidden .lock-panel .icon {
+  font-size: 28px;
+  color: var(--rose-primary);
+  margin-bottom: 8px;
+  display: block;
+}
+.comment.hidden .lock-panel .msg {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--plum-ink);
+  margin-bottom: 4px;
+}
+.comment.hidden .lock-panel .hint {
+  font-family: var(--font-script);
+  color: var(--rose-primary);
+  font-size: 15px;
+}
+
+/* =========================================================
+   FOOTER of the whole mockup
+   ========================================================= */
+.mock-footer {
+  padding: 60px 40px 40px;
+  text-align: center;
+  color: var(--plum-soft);
+  font-size: 12px;
+  position: relative;
+  z-index: 2;
+}
+.mock-footer .ornament {
+  font-family: var(--font-script);
+  color: var(--rose-primary);
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+.mock-footer .fine {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 10px;
+}
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.screen > * { animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) both; }
+.screen > *:nth-child(1) { animation-delay: 0.05s; }
+.screen > *:nth-child(2) { animation-delay: 0.15s; }
+.screen > *:nth-child(3) { animation-delay: 0.25s; }
+.screen > *:nth-child(4) { animation-delay: 0.35s; }
+.screen > *:nth-child(5) { animation-delay: 0.45s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-6px) rotate(-2deg); }
+}
+.streak-badge { animation: float 3s ease-in-out infinite; }
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 900px) {
+  .split { grid-template-columns: 1fr; }
+  .split-vs { padding: 20px; }
+  .vs-mark::before, .vs-mark::after { display: none; }
+  .cap-wrap { grid-template-columns: 1fr; }
+  .cap-side { position: static; }
+  .register-form { grid-template-columns: 1fr; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="brand">the book club</div>
+  <nav>
+    <a href="#home">01 · Home</a>
+    <a href="#ranking">02 · Ranking</a>
+    <a href="#capitulo">03 · Capítulo</a>
+  </nav>
+</div>
+
+<!-- =========================================================
+     SCREEN 01 · HOME
+     ========================================================= -->
+<section class="screen" id="home">
+  <div class="home">
+    <div class="home-hero">
+    <span class="tape l" aria-hidden="true"></span>
+    <span class="tape r" aria-hidden="true"></span>
+    <div class="home-header">
+      <div class="home-header-left">
+        <div class="screen-tag">olá, Malu ✿</div>
+        <h1 class="screen-title">seus <em>clubes</em><br/>e desafios</h1>
+        <p class="screen-sub">Escolha um grupo para continuar sua leitura. Cada ticket representa um jeito diferente de ler junto — clubes correm por páginas, desafios correm contra o tempo.</p>
+      </div>
+      <div class="home-actions">
+        <button class="btn btn-ghost">Entrar com código</button>
+        <button class="btn btn-primary">＋ Criar grupo</button>
+      </div>
+    </div>
+    </div>
+
+    <div class="stat-strip">
+      <div class="stat">
+        <span class="n">03</span>
+        <span class="l">grupos ativos</span>
+      </div>
+      <div class="stat">
+        <span class="n">128</span>
+        <span class="l">páginas esta semana</span>
+      </div>
+      <div class="stat">
+        <span class="n">05</span>
+        <span class="l">dias de streak 🔥</span>
+      </div>
+      <div class="stat">
+        <span class="n">02</span>
+        <span class="l">livros terminados</span>
+      </div>
+    </div>
+
+    <div class="ticket-grid">
+
+      <!-- CLUBE -->
+      <article class="ticket clube pat-stripes-blue">
+        <div class="streak-badge">🔥 5 dias</div>
+        <div class="ticket-head">
+          <div class="ticket-type">Clube · leitura contínua</div>
+          <div class="ticket-name">
+            <em>the</em>
+            Binding<br/>Book Club
+          </div>
+        </div>
+        <div class="ticket-perf"><div class="ticket-perf-dots"></div></div>
+        <div class="ticket-body">
+          <div class="ticket-book">
+            <div class="book-spine"></div>
+            <div class="book-info">
+              <div class="book-title">Binding 13</div>
+              <div class="book-author">por Chloe Walsh</div>
+            </div>
+          </div>
+          <div class="ticket-meta">
+            <div class="ticket-members">
+              <div class="avatar-stack">
+                <div class="av a">L</div>
+                <div class="av b">S</div>
+                <div class="av c">M</div>
+                <div class="av d">C</div>
+              </div>
+              <span class="members-count">4 leitoras</span>
+            </div>
+          </div>
+        </div>
+        <div class="ticket-footer">
+          <span class="code">CLB001</span>
+          <span class="go">Continuar leitura →</span>
+        </div>
+      </article>
+
+      <!-- DESAFIO -->
+      <article class="ticket desafio pat-dots-pink">
+        <div class="ticket-head">
+          <div class="ticket-type">Desafio · com prazo · até 30/set</div>
+          <div class="ticket-name">
+            <em>outubro</em>
+            30 Dias<br/>Sem Parar
+          </div>
+        </div>
+        <div class="ticket-perf"><div class="ticket-perf-dots"></div></div>
+        <div class="ticket-body">
+          <div class="ticket-book">
+            <div class="book-spine"></div>
+            <div class="book-info">
+              <div class="book-title">A Little Life</div>
+              <div class="book-author">por Hanya Yanagihara</div>
+            </div>
+          </div>
+          <div class="ticket-meta">
+            <div class="ticket-members">
+              <div class="avatar-stack">
+                <div class="av b">S</div>
+                <div class="av a">L</div>
+                <div class="av c">M</div>
+              </div>
+              <span class="members-count">3 leitoras · meta 500 pág</span>
+            </div>
+          </div>
+        </div>
+        <div class="ticket-footer">
+          <span class="code">DES042</span>
+          <span class="go">Ver desafio →</span>
+        </div>
+      </article>
+
+      <!-- CLUBE 2 -->
+      <article class="ticket clube pat-stars-butter">
+        <div class="ticket-head">
+          <div class="ticket-type">Clube · leitura contínua</div>
+          <div class="ticket-name">
+            <em>romance</em>
+            Fated<br/>Mates FC
+          </div>
+        </div>
+        <div class="ticket-perf"><div class="ticket-perf-dots"></div></div>
+        <div class="ticket-body">
+          <div class="ticket-book">
+            <div class="book-spine"></div>
+            <div class="book-info">
+              <div class="book-title">From Blood and Ash</div>
+              <div class="book-author">por Jennifer L. Armentrout</div>
+            </div>
+          </div>
+          <div class="ticket-meta">
+            <div class="ticket-members">
+              <div class="avatar-stack">
+                <div class="av d">C</div>
+                <div class="av a">L</div>
+                <div class="av b">S</div>
+                <div class="av c">M</div>
+              </div>
+              <span class="members-count">4 leitoras</span>
+            </div>
+          </div>
+        </div>
+        <div class="ticket-footer">
+          <span class="code">CLB007</span>
+          <span class="go">Continuar leitura →</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider">
+  <span class="ornament">·  ·  ·</span>
+</div>
+
+<!-- =========================================================
+     SCREEN 02 · RANKING (the polymorphism showcase)
+     ========================================================= -->
+<section class="screen" id="ranking">
+  <div class="ranking-wrap">
+    <div class="screen-tag">classificação ✦</div>
+    <h1 class="screen-title">ranking dos <em>grupos</em></h1>
+    <p class="screen-sub">Veja quem está liderando cada grupo de leitura. Cada tipo de grupo tem sua própria regra de pontuação.</p>
+
+    <div class="split">
+      <!-- CLUBE -->
+      <div class="split-col clube sage">
+        <span class="tape l" aria-hidden="true"></span>
+        <span class="tape r" aria-hidden="true"></span>
+        <div class="rank-header">
+          <div class="tipo">tipo · Clube</div>
+          <div class="nome">Binding Book Club</div>
+          <div class="regra">ordenado por total de páginas ✦</div>
+        </div>
+
+        <div class="rank-list">
+          <div class="rank-row">
+            <div class="medal gold">1<span class="oz">st</span></div>
+            <div class="rank-name"><span class="avatar-mini av a">L</span> Luciana</div>
+            <div class="rank-value">200<span class="u">páginas lidas</span></div>
+          </div>
+          <div class="rank-row">
+            <div class="medal silver">2<span class="oz">nd</span></div>
+            <div class="rank-name"><span class="avatar-mini av b">S</span> Sofia</div>
+            <div class="rank-value">85<span class="u">páginas lidas</span></div>
+          </div>
+          <div class="rank-row">
+            <div class="medal bronze">3<span class="oz">rd</span></div>
+            <div class="rank-name"><span class="avatar-mini av c">M</span> Malu</div>
+            <div class="rank-value">28<span class="u">páginas lidas</span></div>
+          </div>
+          <div class="rank-row">
+            <div class="medal">4</div>
+            <div class="rank-name"><span class="avatar-mini av d">C</span> Clarice</div>
+            <div class="rank-value">0<span class="u">páginas lidas</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VS -->
+      <div class="split-vs">
+        <div class="vs-mark">×</div>
+      </div>
+
+      <!-- DESAFIO -->
+      <div class="split-col desafio">
+        <span class="tape l" aria-hidden="true"></span>
+        <span class="tape r" aria-hidden="true"></span>
+        <div class="rank-header">
+          <div class="tipo">tipo · Desafio</div>
+          <div class="nome">30 Dias Sem Parar</div>
+          <div class="regra">ordenado por streak ✦</div>
+        </div>
+
+        <div class="rank-list">
+          <div class="rank-row">
+            <div class="medal gold">1<span class="oz">st</span></div>
+            <div class="rank-name"><span class="avatar-mini av a">L</span> Luciana</div>
+            <div class="rank-value">10<span class="u">dias de streak</span></div>
+          </div>
+          <div class="rank-row">
+            <div class="medal silver">2<span class="oz">nd</span></div>
+            <div class="rank-name"><span class="avatar-mini av b">S</span> Sofia</div>
+            <div class="rank-value">5<span class="u">dias de streak</span></div>
+          </div>
+          <div class="rank-row">
+            <div class="medal bronze">3<span class="oz">rd</span></div>
+            <div class="rank-name"><span class="avatar-mini av c">M</span> Malu</div>
+            <div class="rank-value">2<span class="u">dias de streak</span></div>
+          </div>
+          <div class="rank-row">
+            <div class="medal">4</div>
+            <div class="rank-name"><span class="avatar-mini av d">C</span> Clarice</div>
+            <div class="rank-value">0<span class="u">dias de streak</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider">
+  <span class="ornament">·  ·  ·</span>
+</div>
+
+<!-- =========================================================
+     SCREEN 03 · CAPÍTULO + comentários + spoiler
+     ========================================================= -->
+<section class="screen" id="capitulo">
+  <div style="max-width:1280px;margin:0 auto 56px;">
+    <div class="screen-tag">seu progresso ✿</div>
+    <h1 class="screen-title">capítulo <em>4</em></h1>
+    <p class="screen-sub">Registre suas páginas lidas de hoje, e converse com o grupo sobre o capítulo. Comentários de capítulos à frente do seu progresso ficam escondidos automaticamente — nada de spoiler.</p>
+  </div>
+
+  <div class="cap-wrap">
+
+    <!-- SIDE -->
+    <aside class="cap-side">
+      <div class="book-hero">
+        <div class="cover"></div>
+        <div class="meta">
+          <div class="t">Binding 13</div>
+          <div class="a">Chloe Walsh</div>
+        </div>
+      </div>
+
+      <div class="progress-block">
+        <div class="progress-lbl"><span>seu progresso</span><span>45%</span></div>
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+        <div class="progress-num">90<em>de 200 páginas</em></div>
+      </div>
+
+      <div class="chapters">
+        <div class="label">capítulos</div>
+        <div class="chap read"><span class="marker"></span><span class="n">1</span> A biblioteca</div>
+        <div class="chap read"><span class="marker"></span><span class="n">2</span> Ryan chega</div>
+        <div class="chap read"><span class="marker"></span><span class="n">3</span> A festa</div>
+        <div class="chap current"><span class="marker"></span><span class="n">4</span> O beijo</div>
+        <div class="chap"><span class="marker"></span><span class="n">5</span> Consequências</div>
+        <div class="chap"><span class="marker"></span><span class="n">6</span> A carta</div>
+        <div class="chap"><span class="marker"></span><span class="n">7</span> Verdades</div>
+        <div class="chap"><span class="marker"></span><span class="n">8</span> A reviravolta</div>
+        <div class="chap"><span class="marker"></span><span class="n">9</span> Reconciliação</div>
+        <div class="chap"><span class="marker"></span><span class="n">10</span> Epílogo</div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="cap-main">
+
+      <div class="chapter-card">
+        <div class="chapter-num">capítulo IV</div>
+        <div class="chapter-name">O beijo</div>
+        <div class="chapter-pages">páginas 61–80  ·  20 páginas ao total</div>
+
+        <form class="register-form" onsubmit="event.preventDefault()">
+          <div class="field">
+            <label>páginas lidas hoje</label>
+            <input type="number" value="18" min="1" max="20" />
+          </div>
+          <div class="field">
+            <label>seu comentário (opcional)</label>
+            <input type="text" placeholder="uma linha rápida..." />
+          </div>
+          <button type="submit" class="btn btn-primary">Registrar leitura ✦</button>
+        </form>
+      </div>
+
+      <div class="comments-block">
+        <h4>conversa do capítulo</h4>
+        <div class="sub">o que estão dizendo por aqui</div>
+
+        <!-- Visible comments -->
+        <div class="comment">
+          <div class="comment-head">
+            <div class="av a">L</div>
+            <div class="who">Luciana</div>
+            <div class="badge">momento favorito</div>
+            <div class="when">há 2 dias</div>
+          </div>
+          <div class="comment-text">Gente, esse capítulo destruiu meu sistema nervoso. A tensão entre eles tá literalmente cortando com faca — reli o beijo umas três vezes.</div>
+          <div class="comment-chapter-tag">capítulo 4 · O beijo</div>
+        </div>
+
+        <div class="comment">
+          <div class="comment-head">
+            <div class="av c">M</div>
+            <div class="who">Malu</div>
+            <div class="when">há 1 dia</div>
+          </div>
+          <div class="comment-text">Concordo. E o jeito que a Chloe descreve o ambiente da festa antes é genial, parece que a gente tá lá.</div>
+          <div class="comment-chapter-tag">capítulo 4 · O beijo</div>
+        </div>
+
+        <!-- SPOILER (chapter 8 — user is on chapter 4) -->
+        <div class="comment hidden">
+          <div class="comment-head">
+            <div class="av a">L</div>
+            <div class="who">Luciana</div>
+            <div class="when">há 4 horas</div>
+          </div>
+          <div class="lock-panel">
+            <span class="icon">✦</span>
+            <div class="msg">Este comentário está escondido para você.</div>
+            <div class="hint">termine o capítulo 8 para desbloquear</div>
+          </div>
+        </div>
+
+        <div class="comment hidden">
+          <div class="comment-head">
+            <div class="av b">S</div>
+            <div class="who">Sofia</div>
+            <div class="when">agora mesmo</div>
+          </div>
+          <div class="lock-panel">
+            <span class="icon">✦</span>
+            <div class="msg">Este comentário está escondido para você.</div>
+            <div class="hint">termine o capítulo 10 para desbloquear</div>
+          </div>
+        </div>
+
+        <div class="comment">
+          <div class="comment-head">
+            <div class="av b">S</div>
+            <div class="who">Sofia</div>
+            <div class="when">há 3 dias</div>
+          </div>
+          <div class="comment-text">Comecei ontem e já estou apaixonada. Ryan é literalmente todos os book boyfriends que eu já tive combinados em uma pessoa só. Alguém me segura.</div>
+          <div class="comment-chapter-tag">capítulo 2 · Ryan chega</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="mock-footer">
+  <div class="ornament">it's lit</div>
+  <div class="fine">the book club · leia junto</div>
+</footer>
+
+</body>
+</html>
