@@ -35,6 +35,14 @@ public final class SeedDeTeste {
 
             LocalDate hoje = LocalDate.now();
 
+            Desafio desafio = new Desafio(
+                    "DES001", "Desafio do Livro Teste", hoje.plusDays(15), 200);
+            desafio.setLivroAtual(livro);
+            desafio.adicionarMembro(luciana);
+            desafio.adicionarMembro(sofia);
+            desafio.adicionarMembro(malu);
+            desafio.adicionarMembro(clarice);
+
             luciana.registrarProgresso(20, capitulos.get(0), hoje.minusDays(9), null);
             luciana.registrarProgresso(20, capitulos.get(1), hoje.minusDays(8), null);
             luciana.registrarProgresso(20, capitulos.get(2), hoje.minusDays(7), null);
@@ -72,7 +80,8 @@ public final class SeedDeTeste {
             List<Avaliacao> avaliacoes = new ArrayList<>();
             avaliacoes.add(new Avaliacao(luciana, livro, 9.5, "Ryan", "Não tem vilão claro", "Personagem secundária"));
 
-            return new Cenario(clube, livro, List.of(luciana, sofia, malu, clarice), comentarios, avaliacoes);
+            return new Cenario(
+                    clube, desafio, livro, List.of(luciana, sofia, malu, clarice), comentarios, avaliacoes);
         } catch (CodigoGrupoInvalidoException | CapituloInvalidoException
                 | PrazoDesafioExpiradoException | NotaInvalidaException e) {
             throw new RuntimeException("Falha ao montar o cenario de teste.", e);
@@ -92,14 +101,16 @@ public final class SeedDeTeste {
     public static class Cenario {
 
         private final Clube clube;
+        private final Desafio desafio;
         private final Livro livro;
         private final List<Membro> membros;
         private final List<Comentario> comentarios;
         private final List<Avaliacao> avaliacoes;
 
-        public Cenario(Clube clube, Livro livro, List<Membro> membros,
+        public Cenario(Clube clube, Desafio desafio, Livro livro, List<Membro> membros,
                 List<Comentario> comentarios, List<Avaliacao> avaliacoes) {
             this.clube = clube;
+            this.desafio = desafio;
             this.livro = livro;
             this.membros = membros;
             this.comentarios = comentarios;
@@ -108,6 +119,10 @@ public final class SeedDeTeste {
 
         public Clube getClube() {
             return clube;
+        }
+
+        public Desafio getDesafio() {
+            return desafio;
         }
 
         public Livro getLivro() {

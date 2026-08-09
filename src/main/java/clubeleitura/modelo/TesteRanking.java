@@ -14,6 +14,7 @@ public class TesteRanking {
                 testarEmpateEGrupoVazio();
                 testarDesafioEStreak();
                 testarPrazoExpirado();
+                testarSeedComClubeEDesafio();
 
                 System.out.println("Todos os testes passaram.");
         }
@@ -143,5 +144,21 @@ public class TesteRanking {
 
                 assert lancouExcecao
                                 : "Deveria rejeitar uma leitura depois do prazo.";
+        }
+
+        private static void testarSeedComClubeEDesafio() {
+                SeedDeTeste.Cenario cenario = SeedDeTeste.criarCenarioCompleto();
+
+                assert cenario.getDesafio() != null
+                                : "O cenario deveria disponibilizar um desafio.";
+
+                assert cenario.getDesafio().getLivroAtual() == cenario.getLivro()
+                                : "Clube e desafio deveriam utilizar o mesmo livro.";
+
+                assert cenario.getDesafio().getMembros().equals(cenario.getMembros())
+                                : "Clube e desafio deveriam utilizar os mesmos membros.";
+
+                assert !cenario.getDesafio().getRanking().isEmpty()
+                                : "O ranking do desafio nao deveria estar vazio.";
         }
 }

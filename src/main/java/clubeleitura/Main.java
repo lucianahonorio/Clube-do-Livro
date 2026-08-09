@@ -120,10 +120,10 @@ public class Main {
         SeedDeTeste.Cenario cenario = SeedDeTeste.criarCenarioCompleto();
 
         System.out.println("Ranking do clube (Binding 13):");
-        for (Membro membro : cenario.getClube().getRanking()) {
-            double pontos = cenario.getClube().calcularRanking(membro);
-            System.out.printf("%s: %.1f pontos%n", membro.getNome(), pontos);
-        }
+        imprimirRanking(cenario.getClube());
+
+        System.out.println("\nRanking do desafio (Binding 13):");
+        imprimirRanking(cenario.getDesafio());
 
         Membro malu = cenario.getMembros().get(2);
         System.out.println("\nSpoiler na visao da Malu (leu ate o capitulo 2):");
