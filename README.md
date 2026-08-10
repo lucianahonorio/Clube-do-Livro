@@ -5,33 +5,12 @@
 
 ---
 
-## Índice
-
-**Sobre o projeto**
-* [Sobre o Projeto](#sobre-o-projeto)
-* [Funcionalidades do MVP](#funcionalidades-do-mvp)
-* [Arquitetura & Conceitos de POO](#arquitetura-conceitos-de-poo)
-* [Visão de Futuro](#visao-de-futuro)
-* [Como Executar](#como-executar)
-* [Desenvolvedoras](#desenvolvedoras)
-
-**Relatório do Projeto (Anexo I)**
-* [1. Capa e Identificação](#1-capa-e-identificacao)
-* [2. Introdução](#2-introducao)
-* [3. Modelagem do Problema](#3-modelagem-do-problema)
-* [4. Ferramentas Utilizadas](#4-ferramentas-utilizadas)
-* [5. Resultados e Considerações Finais](#5-resultados-e-consideracoes-finais)
-
----
-
-<a id="sobre-o-projeto"></a>
 ## 🎯 Sobre o Projeto
 
 O **Clube de Leitura* é uma aplicação focada em transformar a leitura em uma experiência coletiva e interativa. Os usuários podem criar ou entrar em grupos de leitura, registrar o número de páginas lidas diariamente, interagir com capítulos via comentários protegidos contra spoilers e subir no ranking do grupo através de metas e hábitos contínuos (streaks).
 
 ---
 
-<a id="funcionalidades-do-mvp"></a>
 ## 🛠️ Funcionalidades do MVP
 
 Já implementado no núcleo do backend:
@@ -50,7 +29,6 @@ Ainda a implementar nesta entrega do MVP:
 
 ---
 
-<a id="arquitetura-conceitos-de-poo"></a>
 ## 🏗️ Arquitetura & Conceitos de POO
 
 A aplicação utiliza os princípios fundamentais da Orientação a Objetos para garantir a manutenibilidade e escalabilidade do código:
@@ -63,7 +41,6 @@ A aplicação utiliza os princípios fundamentais da Orientação a Objetos para
 
 ---
 
-<a id="visao-de-futuro"></a>
 ## 🚀 Visão de Futuro (Próximas Atualizações)
 
 Para versões futuras da plataforma, estão previstos os seguintes incrementos:
@@ -74,7 +51,6 @@ Para versões futuras da plataforma, estão previstos os seguintes incrementos:
 
 ---
 
-<a id="como-executar"></a>
 ## Como Executar
 
 Pré-requisito: JDK 17+ instalado.
@@ -91,7 +67,6 @@ java -cp out clubeleitura.Main
 
 O `Main` roda um cenário fixo de demonstração: cria membros, um livro, um clube e um desafio, registra leituras, calcula streak e ranking, e força os quatro erros de negócio (`CapituloInvalidoException`, `PrazoDesafioExpiradoException`, `NotaInvalidaException`, `CodigoGrupoInvalidoException`) para mostrar o tratamento de exceções funcionando.
 
-<a id="desenvolvedoras"></a>
 ## 👩‍💻 Desenvolvedoras
 
 * [Clarice](https://github.com/usuario-clarice)
@@ -103,7 +78,6 @@ O `Main` roda um cenário fixo de demonstração: cria membros, um livro, um clu
 
 ## Relatório do Projeto
 
-<a id="1-capa-e-identificacao"></a>
 ## 1. Capa e Identificação
 
 **Projeto:** Clube de Leitura
@@ -111,7 +85,6 @@ O `Main` roda um cenário fixo de demonstração: cria membros, um livro, um clu
 **Equipe:** Clarice, Luciana, Malu Quintela, Sofia
 **Repositório:** https://github.com/lucianahonorio/Clube-do-Livro
 
-<a id="2-introducao"></a>
 ## 2. Introdução
 
 Clube de leitura é uma dinâmica simples de organizar e difícil de manter. O grupo combina ler um livro em conjunto, mas cada pessoa lê no seu ritmo, as conversas sobre a leitura acontecem espalhadas em grupos de WhatsApp ou presencialmente, e não existe nenhum controle real de quem está lendo com regularidade e quem parou no segundo capítulo. Dois problemas aparecem direto nesse formato. O primeiro é o spoiler: alguém comenta um plot twist do capítulo 8 num grupo onde tem gente ainda no capítulo 2, e a experiência de leitura dessa pessoa é estragada. O segundo é a falta de incentivo para manter o hábito, sem nenhum tipo de acompanhamento de progresso ou reconhecimento de quem está lendo com constância, é fácil o grupo esfriar depois da primeira semana.
@@ -120,7 +93,6 @@ O projeto Clube de Leitura ataca esses dois problemas com um sistema orientado a
 
 O sistema também separa dois jeitos diferentes de ler em grupo, porque nem todo clube funciona igual. Existe o `Clube`, pensado para leitura contínua sem prazo definido, onde o que importa é o volume de páginas lidas ao longo do tempo. E existe o `Desafio`, que tem prazo final e meta de páginas, e onde o que conta pro ranking é a constância (quantos dias seguidos a pessoa leu, o streak), já que num desafio com prazo apertado manter o hábito todo dia é mais importante do que ler muito de uma vez só. Ao final da leitura, o sistema também permite registrar uma avaliação do livro, com nota e indicação de personagens favoritos, para fechar o ciclo daquela leitura.
 
-<a id="3-modelagem-do-problema"></a>
 ## 3. Modelagem do Problema
 
 [INSERIR DIAGRAMA UML AQUI]
@@ -143,7 +115,6 @@ O sistema é organizado em torno de nove classes de domínio mais um enum, divid
 
 **Coleções.** Além do `List<Membro>` em `Grupo`, do `List<Capitulo>` em `Livro` e do `List<RegistroProgresso>` em `Membro`, o projeto usa `TreeSet` para o cálculo de streak e `Comparator` (tanto para ordenar o `TreeSet` quanto para montar o ranking em `getRanking()`, com desempate por nome usando `Comparator.thenComparing`).
 
-<a id="4-ferramentas-utilizadas"></a>
 ## 4. Ferramentas Utilizadas
 
 O projeto foi escrito em Java (JDK 17), sem framework de aplicação: não há Spring, nem Maven ou Gradle configurados. A compilação e a execução são feitas direto pela linha de comando, com `javac` compilando todos os arquivos de `src/main/java` e `java` rodando a classe desejada (as instruções completas estão na seção "Como Executar" deste README). Essa escolha manteve o setup simples para os quatro integrantes, ao custo de não ter gerenciamento automático de dependências nem um framework de testes de verdade.
@@ -154,7 +125,6 @@ Como não há JUnit configurado, a verificação do sistema foi feita com classe
 
 Por fim, o repositório tem uma pasta `mockups` com um protótipo visual estático em HTML e CSS puro (sem framework de front-end), representando as telas principais da aplicação (início, ranking, capítulo). Esse protótipo ainda não está conectado ao backend em Java, é uma referência visual de como a interface deve funcionar quando for implementada de fato.
 
-<a id="5-resultados-e-consideracoes-finais"></a>
 ## 5. Resultados e Considerações Finais
 
 O que foi entregue nesta etapa é o núcleo de domínio completo do sistema, rodando via linha de comando: criação de grupos (`Clube` e `Desafio`) com validação de código, entrada de membros, registro diário de progresso de leitura, cálculo de streak, ranking que muda de critério dependendo do tipo de grupo, comentários com spoiler automaticamente escondido de quem está atrasado na leitura, e avaliação final do livro com validação de nota. Os sete conceitos de POO pedidos pela disciplina aparecem em pontos concretos do código e não como decoração: herança (`Grupo` → `Clube`/`Desafio`), polimorfismo dinâmico (`calcularPontuacao` sobrescrito, chamado através da referência da superclasse em `getRanking()`), polimorfismo estático (as sobrecargas de `registrarProgresso`), encapsulamento (atributos privados, objetos imutáveis, listas devolvidas como cópia), coleções (`List`, `TreeSet`, `Comparator`), tratamento de exceções (as quatro exceções de negócio, cada uma nascendo de uma regra real do domínio) e as estruturas básicas de controle usadas no cálculo de streak e na montagem do ranking.
