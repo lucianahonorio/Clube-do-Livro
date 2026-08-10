@@ -1602,7 +1602,7 @@ body::before {
           <div class="regra">ordenado por total de páginas ✦</div>
         </div>
 
-        <div class="rank-list">
+        <div class="rank-list" id="rank-list-clube">
           <div class="rank-row">
             <div class="medal gold">1<span class="oz">st</span></div>
             <div class="rank-name"><span class="avatar-mini av a">L</span> Luciana</div>
@@ -1641,7 +1641,7 @@ body::before {
           <div class="regra">ordenado por streak ✦</div>
         </div>
 
-        <div class="rank-list">
+        <div class="rank-list" id="rank-list-desafio">
           <div class="rank-row">
             <div class="medal gold">1<span class="oz">st</span></div>
             <div class="rank-name"><span class="avatar-mini av a">L</span> Luciana</div>
@@ -1810,6 +1810,47 @@ body::before {
   <div class="ornament">it's lit</div>
   <div class="fine">the book club · leia junto</div>
 </footer>
+
+<script>
+  // Busca o ranking real do backend (ApiServer) e substitui os dados
+  // estáticos do mockup, mantendo a mesma marcação/estilo já pronto.
+  // Se o servidor não estiver rodando, o mockup continua funcionando
+  // normalmente com os dados estáticos que já estavam aqui.
+  (function conectarComBackend() {
+    fetch('/api/ranking')
+      .then(function (resposta) { return resposta.json(); })
+      .then(function (dados) {
+        preencherRanking('rank-list-clube', dados.clube);
+        preencherRanking('rank-list-desafio', dados.desafio);
+      })
+      .catch(function () {
+        console.log('ApiServer nao encontrado, mantendo o ranking estatico do mockup.');
+      });
+  })();
+
+  function preencherRanking(idLista, grupo) {
+    var lista = document.getElementById(idLista);
+    if (!lista || !grupo) {
+      return;
+    }
+
+    var medalhas = ['gold', 'silver', 'bronze'];
+    var avatares = ['a', 'b', 'c', 'd'];
+
+    lista.innerHTML = '';
+    grupo.ranking.forEach(function (membro, indice) {
+      var classeMedalha = medalhas[indice] || '';
+      var linha = document.createElement('div');
+      linha.className = 'rank-row';
+      linha.innerHTML =
+        '<div class="medal ' + classeMedalha + '">' + (indice + 1) + '</div>' +
+        '<div class="rank-name"><span class="avatar-mini av ' + avatares[indice % avatares.length] + '">' +
+          membro.nome.charAt(0).toUpperCase() + '</span> ' + membro.nome + '</div>' +
+        '<div class="rank-value">' + membro.pontos + '<span class="u">' + grupo.criterio + '</span></div>';
+      lista.appendChild(linha);
+    });
+  }
+</script>
 
 </body>
 </html>
