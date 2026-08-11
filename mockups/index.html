@@ -1236,6 +1236,15 @@ body::before {
   border-color: var(--rose-primary);
 }
 
+.form-feedback {
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  min-height: 18px;
+}
+.form-feedback.ok { color: #4B7A5B; }
+.form-feedback.erro { color: #B3455B; }
+
 /* COMMENTS */
 .comments-block h4 {
   font-family: var(--font-display);
@@ -1724,17 +1733,18 @@ body::before {
         <div class="chapter-name">O beijo</div>
         <div class="chapter-pages">páginas 61–80  ·  20 páginas ao total</div>
 
-        <form class="register-form" onsubmit="event.preventDefault()">
+        <form class="register-form" id="registrar-form">
           <div class="field">
             <label>páginas lidas hoje</label>
-            <input type="number" value="18" min="1" max="20" />
+            <input type="number" id="registrar-paginas" value="18" min="1" max="20" />
           </div>
           <div class="field">
             <label>seu comentário (opcional)</label>
-            <input type="text" placeholder="uma linha rápida..." />
+            <input type="text" id="registrar-comentario" placeholder="uma linha rápida..." />
           </div>
           <button type="submit" class="btn btn-primary">Registrar leitura ✦</button>
         </form>
+        <div class="form-feedback" id="registrar-feedback"></div>
       </div>
 
       <div class="comments-block">
@@ -1826,6 +1836,57 @@ body::before {
       .catch(function () {
         console.log('ApiServer nao encontrado, mantendo o ranking estatico do mockup.');
       });
+  })();
+
+  // Liga o formulário "Registrar leitura" ao ApiServer (membro fixo "Malu"
+  // e capítulo 4, que é o que esta tela do mockup representa). Se o
+  // servidor não estiver rodando, o fetch falha e a mensagem de erro avisa.
+  (function ligarFormularioDeRegistro() {
+    var form = document.getElementById('registrar-form');
+    if (!form) {
+      return;
+    }
+
+    form.addEventListener('submit', function (evento) {
+      evento.preventDefault();
+
+      var feedback = document.getElementById('registrar-feedback');
+      var paginas = Number(document.getElementById('registrar-paginas').value);
+      var comentario = document.getElementById('registrar-comentario').value;
+
+      feedback.className = 'form-feedback';
+      feedback.textContent = 'Registrando...';
+
+      fetch('/api/progresso', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          membro: 'Malu',
+          capitulo: 4,
+          paginas: paginas,
+          comentario: comentario
+        })
+      })
+        .then(function (resposta) {
+          return resposta.json().then(function (dados) {
+            return { status: resposta.status, dados: dados };
+          });
+        })
+        .then(function (resultado) {
+          if (resultado.dados.ok) {
+            feedback.className = 'form-feedback ok';
+            feedback.textContent = paginas + ' páginas registradas ✦ streak: ' +
+              resultado.dados.streak + ' dia(s) · total no clube: ' + resultado.dados.paginasTotaisClube;
+          } else {
+            feedback.className = 'form-feedback erro';
+            feedback.textContent = resultado.dados.erro || 'Não foi possível registrar a leitura.';
+          }
+        })
+        .catch(function () {
+          feedback.className = 'form-feedback erro';
+          feedback.textContent = 'ApiServer não encontrado — rode o servidor para registrar de verdade.';
+        });
+    });
   })();
 
   function preencherRanking(idLista, grupo) {
