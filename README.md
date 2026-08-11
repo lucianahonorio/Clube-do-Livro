@@ -5,13 +5,13 @@
 
 ---
 
-## 🎯 Sobre o Projeto
+## Sobre o Projeto
 
 O **Clube de Leitura* é uma aplicação focada em transformar a leitura em uma experiência coletiva e interativa. Os usuários podem criar ou entrar em grupos de leitura, registrar o número de páginas lidas diariamente, interagir com capítulos via comentários protegidos contra spoilers e subir no ranking do grupo através de metas e hábitos contínuos (streaks).
 
 ---
 
-## 🛠️ Funcionalidades do MVP
+## Funcionalidades do MVP
 
 Já implementado no núcleo do backend:
 
@@ -21,15 +21,16 @@ Já implementado no núcleo do backend:
 * **Ranking Gamificado:** Classificação dos membros ordenada automaticamente, com critério diferente para Clube e Desafio.
 * **Sistema Anti-Spoiler:** Comentários por capítulo com ocultação automática para quem ainda não chegou naquele ponto da leitura.
 * **Avaliação do Livro:** Nota final (0 a 10) e indicação de personagens (favorito, odiado e identificação).
+* **API HTTP:** `ApiServer` (HttpServer embutido do JDK, sem framework) expõe `GET /api/ranking` e `POST /api/progresso`, e serve o protótipo visual (pasta `mockups`) já ligado a esses dois endpoints.
 
 Ainda a implementar nesta entrega do MVP:
 
 * **Encontros e Missões:** Agendamento de encontros de discussão e sistema de missões por metas concluídas.
-* **Interface gráfica funcional:** já existe um protótipo visual estático (pasta `mockups`), mas ainda não conectado ao backend em Java.
+* **Restante da interface gráfica:** registrar leitura e o ranking já consomem o backend de verdade; criar/entrar em grupo, comentar e avaliar o livro ainda são só o protótipo visual estático.
 
 ---
 
-## 🏗️ Arquitetura & Conceitos de POO
+## Arquitetura & Conceitos de POO
 
 A aplicação utiliza os princípios fundamentais da Orientação a Objetos para garantir a manutenibilidade e escalabilidade do código:
 
@@ -41,7 +42,7 @@ A aplicação utiliza os princípios fundamentais da Orientação a Objetos para
 
 ---
 
-## 🚀 Visão de Futuro (Próximas Atualizações)
+## Visão de Futuro (Próximas Atualizações)
 
 Para versões futuras da plataforma, estão previstos os seguintes incrementos:
 * Upload real de fotos como prova visual de leitura diária.
@@ -79,9 +80,10 @@ java -ea -cp out clubeleitura.modelo.TesteRanking
 ```
 Cobre casos de ranking, empate, streak e prazo expirado usando `assert` (por isso precisa da flag `-ea` para as verificações rodarem de fato).
 
-## 👩‍💻 Desenvolvedoras
+Para ver a interface no navegador, com ranking e registro de leitura ligados ao backend de verdade:
 
-* [Clarice](https://github.com/usuario-clarice)
-* [Luciana](https://github.com/usuario-luciana)
-* [Malu Quintela](https://github.com/usuario-malu)
-* [Sofia](https://github.com/usuario-sofia)
+```bash
+java -cp out clubeleitura.web.ApiServer
+```
+
+Sobe um servidor em `http://localhost:8080`, servindo os arquivos de `mockups/` e expondo `GET /api/ranking` e `POST /api/progresso`.
