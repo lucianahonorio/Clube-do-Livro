@@ -65,10 +65,10 @@ public final class SeedDeTeste {
 
             List<Comentario> comentarios = new ArrayList<>();
             comentarios.add(new Comentario(
-                    "Gostei muito do jeito que a autora apresentou o Ryan no capítulo 1.",
+                    "Gostei muito do jeito que a autora construiu o colégio Tommen logo no capítulo 1, dá pra visualizar o clima do lugar.",
                     capitulos.get(0), TipoComentario.COMUM, malu));
             comentarios.add(new Comentario(
-                    "Esse foi meu capítulo favorito até agora, a tensão entre os dois tá demais.",
+                    "Esse foi meu capítulo favorito até agora — a Shannon lidando com a pressão social do colégio ficou muito real, dá vontade de defender ela.",
                     capitulos.get(4), TipoComentario.MOMENTO_FAVORITO, sofia));
             comentarios.add(new Comentario(
                     "Não esperava essa reviravolta no capítulo 8, mudou tudo!",
@@ -78,7 +78,7 @@ public final class SeedDeTeste {
                     capitulos.get(9), TipoComentario.MOMENTO_FAVORITO, luciana));
 
             List<Avaliacao> avaliacoes = new ArrayList<>();
-            avaliacoes.add(new Avaliacao(luciana, livro, 9.5, "Ryan", "Não tem vilão claro", "Personagem secundária"));
+            avaliacoes.add(new Avaliacao(luciana, livro, 9.5, "Johnny", "Não tem vilão claro", "Personagem secundária"));
 
             return new Cenario(
                     clube, desafio, livro, List.of(luciana, sofia, malu, clarice), comentarios, avaliacoes);

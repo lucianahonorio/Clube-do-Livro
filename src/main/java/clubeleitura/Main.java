@@ -152,7 +152,7 @@ public class Main {
     private static void forcarNotaInvalida(SeedDeTeste.Cenario cenario) {
         try {
             new Avaliacao(cenario.getMembros().get(0), cenario.getLivro(), 15,
-                    "Ryan", "Ninguem", "Personagem secundaria");
+                    "Johnny", "Ninguem", "Personagem secundaria");
         } catch (NotaInvalidaException e) {
             System.out.println("[NotaInvalidaException] " + e.getMessage());
         }
